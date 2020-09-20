@@ -1,5 +1,6 @@
 package hashiwokakero;
 
+import hashiwokakero.exception.BadIslandDataException;
 import hashiwokakero.exception.EmptyPuzzleException;
 import hashiwokakero.exception.NotExistingPuzzleException;
 import hashiwokakero.exception.PuzzleShapeException;
@@ -34,4 +35,35 @@ public class HashiwokakeroSolverCheckerTest {
     public void puzzleShapeTest() {
         game.check(new int[][]{{1}, {2, 3}});
     }
+
+    @Test(expected = BadIslandDataException.class)
+    public void islandDataTest1() {
+        game.check(new int[][]{{-1}});
+    }
+
+    @Test(expected = BadIslandDataException.class)
+    public void islandDataTest2() {
+        game.check(new int[][]{{9}});
+    }
+
+    @Test(expected = BadIslandDataException.class)
+    public void islandDataTest3() {
+        game.check(new int[][]{{5, 6, 4}, {6, 8, 6}, {4, 6, 4}});
+    }
+
+    @Test(expected = BadIslandDataException.class)
+    public void islandDataTest4() {
+        game.check(new int[][]{{4, 6, 5}, {6, 8, 6}, {4, 6, 4}});
+    }
+
+    @Test(expected = BadIslandDataException.class)
+    public void islandDataTest5() {
+        game.check(new int[][]{{4, 6, 4}, {6, 8, 6}, {5, 6, 4}});
+    }
+
+    @Test(expected = BadIslandDataException.class)
+    public void islandDataTest6() {
+        game.check(new int[][]{{4, 6, 4}, {6, 8, 6}, {4, 6, 5}});
+    }
+
 }
