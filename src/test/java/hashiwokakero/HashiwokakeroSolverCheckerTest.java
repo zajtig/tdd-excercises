@@ -1,12 +1,12 @@
 package hashiwokakero;
 
-import org.junit.Assert;
+import hashiwokakero.exception.NotExistingPuzzleException;
 import org.junit.Test;
 
 public class HashiwokakeroSolverCheckerTest {
 
-    @Test
-    public void createTest() {
-        Assert.assertNotNull(new HashiwokakeroSolverChecker());
+    @Test(expected = NotExistingPuzzleException.class)
+    public void nullPuzzleTest() {
+        new HashiwokakeroSolverChecker().check(null);
     }
 }
