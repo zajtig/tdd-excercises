@@ -12,7 +12,7 @@ public class HashiwokakeroSolverCheckerTest {
     private HashiwokakeroSolverChecker game;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         game = new HashiwokakeroSolverChecker();
     }
 
@@ -33,17 +33,7 @@ public class HashiwokakeroSolverCheckerTest {
 
     @Test(expected = PuzzleShapeException.class)
     public void puzzleShapeTest() {
-        game.check(new int[][]{{1}, {2, 3}});
-    }
-
-    @Test(expected = BadIslandDataException.class)
-    public void islandDataTest1() {
-        game.check(new int[][]{{-1}});
-    }
-
-    @Test(expected = BadIslandDataException.class)
-    public void islandDataTest2() {
-        game.check(new int[][]{{9}});
+        game.check(new int[][]{{1, 2}, {2, 3, 4}});
     }
 
     @Test(expected = BadIslandDataException.class)
@@ -66,4 +56,28 @@ public class HashiwokakeroSolverCheckerTest {
         game.check(new int[][]{{4, 6, 4}, {6, 8, 6}, {4, 6, 5}});
     }
 
+    @Test(expected = BadIslandDataException.class)
+    public void islandDataTest7() {
+        game.check(new int[][]{{4, 7, 4}, {6, 8, 6}, {4, 6, 4}});
+    }
+
+    @Test(expected = BadIslandDataException.class)
+    public void islandDataTest8() {
+        game.check(new int[][]{{4, 6, 4}, {7, 8, 6}, {4, 6, 4}});
+    }
+
+    @Test(expected = BadIslandDataException.class)
+    public void islandDataTest9() {
+        game.check(new int[][]{{4, 6, 4}, {6, 8, 7}, {4, 6, 4}});
+    }
+
+    @Test(expected = BadIslandDataException.class)
+    public void islandDataTest10() {
+        game.check(new int[][]{{4, 6, 4}, {6, 8, 6}, {4, 7, 4}});
+    }
+
+    @Test(expected = BadIslandDataException.class)
+    public void islandDataTest11() {
+        game.check(new int[][]{{4, 6, 4}, {6, 9, 6}, {4, 6, 4}});
+    }
 }

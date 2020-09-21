@@ -8,8 +8,9 @@ import hashiwokakero.exception.PuzzleShapeException;
 public class HashiwokakeroSolverChecker {
 
     public static final int EMPTY_ISLAND = 0;
-    public static final int ISLAND_MAX_CONNECTIONS = 8;
-    public static final int CORNER_ISLAND_MAX_CONNECTIONS = 4;
+    public static final int MAX_CONNECTION_BETWEEN_TWO_ISLANDS = 2;
+    public static final int MAX_REACHABLE_ISLANDS = 4;
+
 
     public void check(int[][] puzzle) {
         checkPuzzleExists(puzzle);
@@ -29,7 +30,7 @@ public class HashiwokakeroSolverChecker {
     }
 
     private void checkPuzzleEmpty(int[][] puzzle) {
-        if (puzzle.length == 0 || puzzle[0].length == 0) {
+        if (puzzle.length < 2 || puzzle[0].length < 2) {
             throw new EmptyPuzzleException();
         }
     }
@@ -43,26 +44,34 @@ public class HashiwokakeroSolverChecker {
     private void checkIslandDataValues(int[][] puzzle) {
         for (int i = 0; i < puzzle.length; i++) {
             for (int j = 0; j < puzzle[i].length; j++) {
-                checkIslandDataValues(puzzle[i][j]);
-                checkCornerIslandConnections(puzzle, i, j);
+                checkIslandDataValues(puzzle[i][j], calculateCannotReachableIslandsNumber(i, j, puzzle));
             }
         }
     }
 
-    private void checkIslandDataValues(int islandConnections) {
-        if (islandConnections < EMPTY_ISLAND || islandConnections > ISLAND_MAX_CONNECTIONS) {
+    private int calculateCannotReachableIslandsNumber(int i, int j, int[][] puzzle) {
+        int cannotReachableIslandsNumber = 0;
+        if (isTopOrBottomIsland(i, puzzle.length - 1)) {
+            cannotReachableIslandsNumber++;
+        }
+        if (isLeftOrRightIsland(j, puzzle[i].length - 1)) {
+            cannotReachableIslandsNumber++;
+        }
+        return cannotReachableIslandsNumber;
+    }
+
+    private boolean isTopOrBottomIsland(int currentRow, int maxRow) {
+        return currentRow == 0 || currentRow == maxRow;
+    }
+
+    private boolean isLeftOrRightIsland(int currentColumn, int maxColumn) {
+        return currentColumn == 0 || currentColumn == maxColumn;
+    }
+
+    private void checkIslandDataValues(int islandConnections, int cannotReachableIslandsNumber) {
+        if (islandConnections < EMPTY_ISLAND
+                || islandConnections > (MAX_REACHABLE_ISLANDS - cannotReachableIslandsNumber) * MAX_CONNECTION_BETWEEN_TWO_ISLANDS) {
             throw new BadIslandDataException();
         }
     }
-
-    private void checkCornerIslandConnections(int[][] puzzle, int i, int j) {
-        if (isCornerIsland(puzzle, i, j) && puzzle[i][j] > CORNER_ISLAND_MAX_CONNECTIONS) {
-            throw new BadIslandDataException();
-        }
-    }
-
-    private boolean isCornerIsland(int[][] puzzle, int i, int j) {
-        return (i == 0 || i == puzzle.length - 1) && (j == 0 || j == puzzle[i].length - 1);
-    }
-
 }
